@@ -1,0 +1,22 @@
+# Mac OS X
+*.DS_Store
+
+# Generated files
+*.o
+*.pyc
+*~.pyc
+.idea
+
+#Python modules
+__pycache__
+MANIFEST
+dist/
+build/
+env/
+
+# Backup files
+*~.nib
+
+# Custome
+.vscode/
+temp/
