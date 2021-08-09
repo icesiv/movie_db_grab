@@ -3,10 +3,8 @@ import json
 import scrapy
 from datetime import datetime
 
-from ..items import ItemPerson
-from helper.utils import clean_result, strip_tags
-from urllib.parse import urlparse, parse_qs, urlunparse, urlencode, urljoin
-
+from helper.utils import clean_result
+# from urllib.parse import urlparse, parse_qs, urlunparse, urlencode, urljoin
 
 class GetPerson(scrapy.Spider):
     name = "GetPerson"
@@ -15,20 +13,51 @@ class GetPerson(scrapy.Spider):
     max_page = 2951
 
     custom_settings = {
+        'FEED_URI': 'db/person.csv',
         'LOG_LEVEL': 'ERROR',  # CRITICAL, ERROR, WARNING, INFO, DEBUG
-        'DOWNLOADER_MIDDLEWARES': {
-            'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-            'scrapy_useragents.downloadermiddlewares.useragents.UserAgentsMiddleware': 500,
-        },
+        'FEED_EXPORT_FIELDS': [
+            'id',
+            'name',
+            'profile_pic',
+            'details_table',
+            'description',
+            'images',
+            
+            'acting',
+            'direction',
+            'writer',
+            'art',
+            'choreographer',
+            'producer_person',
+            'lyricist',
+            'singer',
+            
+            'scrap_date',
+        ],
     }
+    
+    def get_movie_info(self, r):
+        if not r:
+            return "-"
+
+        movies = []
+        links = r.css('li a::attr(href)').extract()
+
+        for l in links:
+            if l.find('/movie/') > 0:
+                movies.append(l.split('/')[-2])
+            
+        return movies
+        
+
 
     def parse(self, response):
-        item = ItemPerson()
+        item = {}
         
         item['id'] = self.curr_page
         item['scrap_date'] = datetime.today().strftime('%Y-%m-%d %H:%M')
 
-        item['name'] = response.css('.entry-title::text').extract_first()
+        item['name'] = clean_result(response.css('.entry-title::text').extract_first())
         item['description'] = response.css('.entry-content').extract()
 
         details_table = []
@@ -59,10 +88,19 @@ class GetPerson(scrapy.Spider):
             item['images'] = json.dumps(picked_images)
         else:
             item['images'] = "-"
+            
+            
+        item['acting'] = self.get_movie_info(response.css('#acting'))
+        item['direction'] = self.get_movie_info(response.css('#direction'))
+        item['writer'] = self.get_movie_info(response.css('#writer'))
+        item['art'] = self.get_movie_info(response.css('#art'))
+        item['choreographer'] = self.get_movie_info(response.css('#choreographer'))
+        item['producer_person'] = self.get_movie_info(response.css('#producer_person'))
+        item['lyricist'] = self.get_movie_info(response.css('#lyricist'))
+        item['singer'] = self.get_movie_info(response.css('#singer'))
         
         print(item['id'],item['name'])
         yield item
-
 
         if self.curr_page < self.max_page:
             self.curr_page += 1 

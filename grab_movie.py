@@ -1,7 +1,7 @@
 import argparse
 from data_grab.run_scraper import Scraper
+from data_grab.spiders.s_movie import GetMovie
 
-from data_grab.spiders.s_person import GetPerson
 
 parser = argparse.ArgumentParser(description='Process some integers.')
 
@@ -12,4 +12,4 @@ args = parser.parse_args()
 print("Starting from index ", args.integers)
 
 scraper = Scraper()
-scraper.run_spiders(GetPerson , args.integers[0], 'https://www.bmdb.com.bd/person/')
+scraper.run_spiders(GetMovie , args.integers[0], 'https://www.bmdb.com.bd/movie/')

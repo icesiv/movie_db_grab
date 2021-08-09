@@ -1,32 +1,19 @@
-
-DOWNLOAD_DELAY = 2
-DOWNLOADER_CLIENT_TLS_METHOD = "TLSv1.2"
-
 FEED_FORMAT = 'csv'
-FEED_URI = 'db/person.csv'
-FEED_EXPORT_FIELDS = [
-    'id',
-    'name',
-    'description',
-    'details_table',
-    'profile_pic',
-    'images',
-    'scrap_date',
-]
-
+LOG_LEVEL = 'ERROR'
+DOWNLOADER_CLIENT_TLS_METHOD = "TLSv1.2"
+DOWNLOAD_DELAY = 2
 ROBOTSTXT_OBEY = False
 ROTATING_PROXY_LIST_PATH = 'db/proxies.txt'
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-    'data_grab.pipelines.DataGrabPipeline': 300,
-}
+# ITEM_PIPELINES = {
+#     'data_grab.pipelines.DataGrabPipeline': 300,
+# }
 
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-    'scrapy_useragents.downloadermiddlewares.useragents.UserAgentsMiddleware':
-    500,
+    'scrapy_useragents.downloadermiddlewares.useragents.UserAgentsMiddleware': 500,
 }
 
 USER_AGENTS = [
