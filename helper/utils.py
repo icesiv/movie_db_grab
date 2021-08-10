@@ -41,7 +41,7 @@ def remove_multi(main_text, text_to_remove):
     return main_text
 
 
-def clean_result(result, text_to_remove=None, default='-', single_line=False):
+def clean_result(result, text_to_remove=None, default='-', single_line=False, strip=True):
     if result is None:
         return default
 
@@ -50,8 +50,6 @@ def clean_result(result, text_to_remove=None, default='-', single_line=False):
     if text_to_remove is not None:
         remove_multi(result, text_to_remove)
 
-    result = result.strip()
-
     if single_line:
         result = result.replace('\n', ' ').replace('\r', ' ')
 
@@ -59,6 +57,9 @@ def clean_result(result, text_to_remove=None, default='-', single_line=False):
 
     if result is '':
         return default
+    
+    if strip:
+        result = result.strip()
 
     return result
 

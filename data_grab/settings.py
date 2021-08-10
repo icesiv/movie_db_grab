@@ -4,7 +4,7 @@ LOG_LEVEL = 'ERROR'
 # DOWNLOAD_DELAY = 2
 ROBOTSTXT_OBEY = False
 ROTATING_PROXY_LIST_PATH = 'db/proxies.txt'
-
+HTTPERROR_ALLOWED_CODES  =[404]
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 # ITEM_PIPELINES = {

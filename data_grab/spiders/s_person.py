@@ -52,13 +52,23 @@ class GetPerson(scrapy.Spider):
 
 
     def parse(self, response):
+        
+        if response.status ==  404:
+            print("id ", self.curr_page , "not found")
+            if self.curr_page < self.max_page:
+                self.curr_page += 1 
+                next_page_url = "https://www.bmdb.com.bd/person/" + str(self.curr_page) + "/"
+                yield scrapy.Request(url=next_page_url, callback=self.parse)
+                return
+        
+        
         item = {}
         
         item['id'] = self.curr_page
         item['scrap_date'] = datetime.today().strftime('%Y-%m-%d %H:%M')
 
-        item['name'] = clean_result(response.css('.entry-title::text').extract_first())
-        item['description'] = response.css('.entry-content').extract()
+        item['name'] = clean_result(response.css('.entry-title::text').extract_first(),None,'-',True)
+        item['description'] = clean_result(response.css('.entry-content').extract_first())
 
         details_table = []
         for row in response.xpath('//*[@class="table"]//tr'):
