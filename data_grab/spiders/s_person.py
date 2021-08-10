@@ -99,7 +99,7 @@ class GetPerson(scrapy.Spider):
         item['lyricist'] = self.get_movie_info(response.css('#lyricist'))
         item['singer'] = self.get_movie_info(response.css('#singer'))
         
-        print(item['id'],item['name'])
+        print(item['id'],"/",self.max_page,' - ',item['name'])
         yield item
 
         if self.curr_page < self.max_page:

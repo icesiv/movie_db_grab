@@ -8,4 +8,4 @@
 * pip install mysql-connector-python
 
 ## Process
-python3 grab_person.py 0
+python3 grab_person.py 1
